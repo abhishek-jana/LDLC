@@ -38,9 +38,6 @@ def messege(k,x):
 def conv(j,h_r):
     # assuming r is known
     # h_r is the non-zero elements of a row
-    #r = np.arange(len(h_r))
-    #r_new = np.delete(r,j) # removing j from the array
-    #h_r_new = np.delete(h_r,j)
     p_j = 1
     for i,k in enumerate (h_r[:j]):
         p_j = np.convolve(p_j,messege(i,x/k))
