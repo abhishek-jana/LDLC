@@ -27,6 +27,8 @@ y = x + w
 # x1, x2, x3, x4,...,xn -> variable node c1,c2,....,cn -> check node
 # Initialization
 
+x_input = np.arange(-200.0,200.0,0.1)
+
 def messege(k,x):
     # y and sigma should be given
     global y
@@ -35,7 +37,7 @@ def messege(k,x):
 
 # Basic iteration
 
-def conv(j,h_r):
+def conv(j,h_r,x):
     # assuming r is known
     # h_r is the non-zero elements of a row
     p_j = 1
@@ -45,11 +47,28 @@ def conv(j,h_r):
         p_j = np.convolve(p_j,messege(l,x/m))
     return p_j
 
-#print (conv(0,np.array([-0.8,-0.5,1])))
+def stretch(j,h_r,x):
+    # The result is stretched by -h_j
+    return conv(j,h_r,-h_r[j]*x)
+
+def periodic_extension(j,h_r,x):
+    #The result is extended to a periodic function with period 1/|hj |:
+    end = 1000
+    i = -1000
+    q = 0
+    while i < end:
+        q += stretch(j, h_r , x  - i/h_r[j])
+        i += 1
+    return q
+    
+#print (conv(1,np.array([-0.8,-0.5,1])))
 #print (messege(1,x))
     
     
+#test = stretch(1,[-0.8,-0.5,1],x_input)
+#nonzero = [e for e in test if e!= 0]
 
+#print (len(nonzero),len(test))
 
-#print (messege(y,1,x))
+print (len(periodic_extension(1,[-0.8,-0.5,1],x_input)))
 
